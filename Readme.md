@@ -19,23 +19,23 @@ This server expose a simple api to schedule the send of a push notification. The
 
 ## Getting started
 
-1. Before start is it necessary to register one or more app, there is a command line tool to simplify this process but please refer to [rpush](https://github.com/rpush/rpush) docs for details:
+Before start is it necessary to register one or more app, there is a command line tool to simplify this process but please refer to [rpush](https://github.com/rpush/rpush) docs for details:
 ```shell
 ruby register_app.rb --help
 ```
-3. Start redis, [(how to install and start redis)](http://redis.io/topics/quickstart)
+Start redis, [(how to install and start redis)](http://redis.io/topics/quickstart)
 ```shell
 redis-server
 ```
-3. Start web server
+Start web server
 ```shell
 bundle exec rackup
 ```
-4. Start sidekiq
+Start sidekiq
 ```shell
 bundle exec sidekiq -r ./server.rb
 ```
-5. Start rpush service
+Start rpush service
 ```shell
 bundle exec rpush start
 ```
