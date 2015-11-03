@@ -23,15 +23,15 @@ This server expose a simple api to schedule the send of a push notification. The
 ```shell
 ruby register_app.rb --help
 ```
-* Start web server
+2. Start web server
 ```shell
 bundle exec rackup
 ```
-* Start sidekiq
+3. Start sidekiq
 ```shell
 bundle exec sidekiq -r ./server.rb
 ```
-* Start rpush service
+4. Start rpush service
 ```shell
 bundle exec rpush start
 ```
