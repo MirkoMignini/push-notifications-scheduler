@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'sinatra/reloader'
 require 'sinatra/activerecord'
 require 'sidekiq'
 require 'sidekiq/api'
@@ -8,6 +9,10 @@ require './pusher.rb'
 
 class Server < Sinatra::Base
   register Sinatra::ActiveRecordExtension
+  
+  configure :development do
+    register Sinatra::Reloader
+  end
   
   get '/' do    
     stats = Sidekiq::Stats.new
@@ -20,7 +25,7 @@ class Server < Sinatra::Base
     <p><a href='/sidekiq'>Dashboard</a></p>
     "
   end
-
+  
   post '/schedule_push' do
     content_type :json
     
