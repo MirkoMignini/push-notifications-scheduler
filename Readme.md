@@ -6,10 +6,10 @@
 
 This server expose a simple api to schedule the send of a push notification. The system use [rpush](https://github.com/rpush/rpush) so it's compatible with the following services:
 
-* [**Apple Push Notification Service**](#apple-push-notification-service)
-* [**Google Cloud Messaging**](#google-cloud-messaging)
-* [**Amazon Device Messaging**](#amazon-device-messaging)
-* [**Windows Phone Push Notification Service**](#windows-phone-notification-service) 
+* Apple Push Notification Service
+* Google Cloud Messaging
+* Amazon Device Messaging
+* Windows Phone Push Notification Service
 
 ## Technologies used
 
