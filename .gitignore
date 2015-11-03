@@ -1,0 +1,29 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+Gemfile.lock
+
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.sqlite3-journal
+
+# Ignore all logfiles and tempfiles.
+/log/*
+!/log/.keep
+/tmp
+
+# Ignore rubymine ide files
+.idea/
+
+# Mac OS files
+.DS_Store
+
+# Redis dump
+dump.rdb
+
+# APNS Certificates
+*.pem
