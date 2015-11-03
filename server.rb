@@ -26,17 +26,29 @@ class Server < Sinatra::Base
     "
   end
   
-  post '/schedule_push' do
+  post '/schedule' do
     content_type :json
     
     begin
+      raise ArgumentError('Platform argument is required') unless params.include?('platform')
+      raise ArgumentError('Platform is not apns, gcm, adm or wpns.') unless %w(apns gcm adm wpns).include?(params['platform'])
+      raise ArgumentError('Application argument is required') unless params.include?('app')
+      raise ArgumentError('Device argument is required') unless params.include?('device')
+      raise ArgumentError('Date argument is required') unless params.include?('date')
+      
       date = Time.at(params['date'].to_i)
-      device_token = params['device_token']
-      message = params['message']
-      Pusher.perform_at(date.to_i, device_token, message)
-      #Pusher.perform_async(device_token, message)
+      platform = params['platform']
+      app = params['app']
+      device = params['device']
+      message = params.include?('message') ? params['message'] : nil
+      data = params.include?('data') ? params['data'] : nil
+      
+      Pusher.perform_at(date.to_i, platform, app, device, message, data)
+      
     rescue Exception => e
+      
       return {result: 'ko', error: e.to_s}.to_json  
+      
     end
     
     {result: 'ok'}.to_json

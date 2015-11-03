@@ -2,25 +2,71 @@ require 'spec_helper.rb'
 require 'sidekiq/testing'
 require_relative '../pusher.rb'
 
-describe "My Sinatra Application" do
+describe "Server" do
+  
   it "should allow accessing the home page" do
     get '/'
-    
     expect(last_response).to be_ok
   end
   
-  it "should schedule push" do
-    expect(Pusher.jobs.size).to eq(0)
+  describe '/schedule' do
     
-    post '/schedule_push', {'date' => Time.now.to_i, 
-                            'token' => '8bb578ed87a65923497700f89e26c0f567db0af30e219b84966224498a1fd53a', 
-                            'message' => 'test'}
+    context 'valid params' do
+      
+      subject(:schedule_valid) do
+        post '/schedule', { 
+                            date: Time.now.to_i, 
+                            platform: 'apns',
+                            app: 'ios_app',
+                            device: 'device_token',
+                            message: 'test',
+                            data: {}
+                          }
+      end
     
-    expect(last_response).to be_ok
+      it 'responds with 200' do
+        schedule_valid
+        expect(last_response).to be_ok
+      end
+
+      it 'responds with json' do
+        schedule_valid
+        expect(last_response.header['Content-Type']).to eq('application/json')
+      end
+
+      it 'responds json ok' do
+        schedule_valid
+        json = JSON.parse(last_response.body)
+        expect(json['result']).to eq('ok')
+      end    
+      
+      it 'add job to queue' do
+        expect {
+          schedule_valid
+        }.to change{ Pusher.jobs.size }.by(1)
+      end
     
-    json = JSON.parse(last_response.body)
-    expect(json['result']).to eq('ok')
+    end
     
-    expect(Pusher.jobs.size).to eq(1)
+    context 'not valid params' do
+      
+      subject(:schedule_not_valid) do
+        post '/schedule'
+      end
+      
+      it 'responds json ko' do
+        schedule_not_valid
+        json = JSON.parse(last_response.body)
+        expect(json['result']).to eq('ko')
+      end  
+      
+      it 'does not add job to queue' do
+        expect {
+          schedule_not_valid
+        }.to change{ Pusher.jobs.size }.by(0)
+      end
+    
+    end
+    
   end
 end
