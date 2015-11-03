@@ -12,7 +12,9 @@ describe "My Sinatra Application" do
   it "should schedule push" do
     expect(Pusher.jobs.size).to eq(0)
     
-    post '/schedule_push', {'date' => Time.now.to_i, 'token' => 'token', 'message' => 'message'}
+    post '/schedule_push', {'date' => Time.now.to_i, 
+                            'token' => '8bb578ed87a65923497700f89e26c0f567db0af30e219b84966224498a1fd53a', 
+                            'message' => 'test'}
     
     expect(last_response).to be_ok
     
